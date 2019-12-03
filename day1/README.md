@@ -1,4 +1,4 @@
-# --- Day 1: The Tyranny of the Rocket Equation ---
+# Day 1: The Tyranny of the Rocket Equation
 
 Santa has become stranded at the edge of the Solar System while delivering presents to other planets! To accurately calculate his position in space, safely align his warp drive, and return to Earth in time to save Christmas, he needs you to bring him measurements from fifty stars.
 
@@ -20,10 +20,11 @@ For a mass of 100756, the fuel required is 33583.
 The Fuel Counter-Upper needs to know the total fuel requirement. To find it, individually calculate the fuel needed for the mass of each module (your puzzle input), then add together all the fuel values.
 ```
 
-## What is the sum of the fuel requirements for all of the modules on your spacecraft?
+***What is the sum of the fuel requirements for all of the modules on your spacecraft?***
+<br>
 <br>
 
-# --- Part Two ---
+# Part Two
 During the second Go / No Go poll, the Elf in charge of the Rocket Equation Double-Checker stops the launch sequence. Apparently, you forgot to include additional fuel for the fuel you just added.
 
 Fuel itself requires fuel just like a module - take its mass, divide by three, round down, and subtract 2. However, that fuel also requires fuel, and that fuel requires fuel, and so on. Any mass that would require negative fuel should instead be treated as if it requires zero fuel; the remaining mass, if any, is instead handled by wishing really hard, which has no mass and is outside the scope of this calculation.
@@ -37,4 +38,4 @@ At first, a module of mass 1969 requires 654 fuel. Then, this fuel requires 216 
 The fuel required by a module of mass 100756 and its fuel is: 33583 + 11192 + 3728 + 1240 + 411 + 135 + 43 + 12 + 2 = 50346.
 ```
 
-## What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel? 
+***What is the sum of the fuel requirements for all of the modules on your spacecraft when also taking into account the mass of the added fuel?***
