@@ -1,17 +1,18 @@
 
 export class IntCodeComputer {
+  executionHalted = false;
+
   private currentOutput: number = null;
   private inputSignals = [];
   private currentInstructionIndex = 0;
   private instructions: number[];
-  public executionHalted = false;
   private executionPaused = true;
 
   constructor(instructions: number[]) {
     this.instructions = [...instructions];
   }
 
-  public execute(): number {
+  execute(): number {
     this.executionPaused = false;
 
     while (!this.executionPaused && !this.executionHalted) {
@@ -22,13 +23,9 @@ export class IntCodeComputer {
     return this.currentOutput;
   }
 
-  public enqueueInput(...inputs: number[]): IntCodeComputer {
+  enqueueInput(...inputs: number[]): IntCodeComputer {
     this.inputSignals.push(...inputs);
     return this;
-  }
-
-  public getCurrentOutput(): number {
-    return this.currentOutput;
   }
 
   private getCurrentInput(): number {
