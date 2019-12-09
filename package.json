@@ -1,0 +1,27 @@
+{
+  "name": "Advent-of-Code-2019",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@types/node": "^12.12.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaborszekely/Advent-of-Code-2019.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaborszekely/Advent-of-Code-2019/issues"
+  },
+  "homepage": "https://github.com/gaborszekely/Advent-of-Code-2019#readme"
+}

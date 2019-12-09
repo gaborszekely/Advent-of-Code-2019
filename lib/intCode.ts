@@ -8,8 +8,8 @@ export class IntCodeComputer {
   private instructions: number[];
   private executionPaused = true;
 
-  constructor(instructions: number[]) {
-    this.instructions = [...instructions];
+  constructor(instructions: string[] | number[]) {
+    this.instructions = [...instructions].map(i => Number(i));
   }
 
   execute(): number {
