@@ -1,10 +1,5 @@
 const fs = require("fs");
 
-enum DirectionEnum {
-  FORWARD = "forward",
-  BACKWARD = "backward",
-}
-
 interface Asteroid {
   offset: number;
   coords: [number, number];
@@ -38,7 +33,8 @@ export function partOneSolution(input: string): [number, Coord] {
 
 export function partTwoSolution(input: string, n: number): Coord {
   const inputArr = input.split("\n").map((i: string) => i.split(""));
-  const [, [targetI, targetJ]] = partOneSolution(input);
+  const [maxSeen, [targetI, targetJ]] = partOneSolution(input);
+  console.log(maxSeen)
   let totalAsteroids = findTotalAsteroids(targetI, targetJ, inputArr);
   let results = [];
   let iteration: number = 0;
@@ -49,8 +45,10 @@ export function partTwoSolution(input: string, n: number): Coord {
     results = [...results, ...asteroidsSeen];
   }
 
-  console.log(results.length)
-  return results.sort(laserSort)[n - 1];
+  results = results.sort(laserSort);
+  console.log(results)
+  console.log(results[199])
+  return results[n - 1];
 }
 
 function laserSort(a: Asteroid, b: Asteroid) {
@@ -162,7 +160,9 @@ const input = fs.readFileSync(__dirname + "/input.txt").toString();
 
 const [maxSeen, targetAsteroid] = partOneSolution(input);
 
-console.log(maxSeen);
+console.log(targetAsteroid);
 
 const res = partTwoSolution(input, 200);
 console.log(res)
+
+// 15 = x, 6 = y
