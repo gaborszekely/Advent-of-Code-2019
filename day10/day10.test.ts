@@ -1,5 +1,9 @@
 import { assert } from "../lib";
-import { partOneSolution, findAsteroidsSeen } from "./day10";
+import { partOneSolution, partTwoSolution } from "./day10";
+
+/*
+ * Part One Test Cases
+ */
 
 const test1 = `.#..#
 .....
@@ -7,11 +11,9 @@ const test1 = `.#..#
 ....#
 ...##`;
 
-
-const test1Solution = partOneSolution(test1);
-assert(findAsteroidsSeen(4, 3, test1.split('\n').map(i => i.split(''))), 8);
-assert(test1Solution[0], 3);
-assert(test1Solution[1], 4);
+const [maxSeen1, test1Solution] = partOneSolution(test1);
+assert(maxSeen1, 8);
+assert(test1Solution.join(","), "4,3");
 
 const test2 = `......#.#.
 #..#.#....
@@ -22,11 +24,10 @@ const test2 = `......#.#.
 #..#....#.
 .##.#..###
 ##...#..#.
-.#....####`
-const test2Solution = partOneSolution(test2);
-assert(findAsteroidsSeen(8, 5, test2.split('\n').map(i => i.split(''))), 33)
-assert(test2Solution[0], 5);
-assert(test2Solution[1], 8);
+.#....####`;
+const [maxSeen2, test2Solution] = partOneSolution(test2);
+assert(maxSeen2, 33);
+assert(test2Solution.join(","), "8,5");
 
 const test3 = `#.#...#.#.
 .###....#.
@@ -37,12 +38,11 @@ const test3 = `#.#...#.#.
 ..#...##..
 ..##....##
 ......#...
-.####.###.`
+.####.###.`;
 
-const test3Solution = partOneSolution(test3);
-assert(findAsteroidsSeen(2, 1, test3.split('\n').map(i => i.split(''))), 35)
-assert(test3Solution[0], 1);
-assert(test3Solution[1], 2);
+const [maxSeen3, test3Solution] = partOneSolution(test3);
+assert(maxSeen3, 35);
+assert(test3Solution.join(","), "2,1");
 
 const test4 = `.#..#..###
 ####.###.#
@@ -55,10 +55,9 @@ const test4 = `.#..#..###
 .##...##.#
 .....#.#..`;
 
-const test4Solution = partOneSolution(test4);
-assert(findAsteroidsSeen(3, 6, test4.split('\n').map(i => i.split(''))), 41)
-assert(test4Solution[0], 6);
-assert(test4Solution[1], 3);
+const [maxSeen4, test4Solution] = partOneSolution(test4);
+assert(maxSeen4, 41);
+assert(test4Solution.join(","), "3,6");
 
 const test5 = `.#..##.###...#######
 ##.############..##.
@@ -82,6 +81,19 @@ const test5 = `.#..##.###...#######
 ###.##.####.##.#..##
 `;
 
-const test5Solution = partOneSolution(test5);
-assert(test5Solution[0], 11);
-assert(test5Solution[1], 13);
+const [maxSeen5, test5Solution] = partOneSolution(test5);
+assert(maxSeen5, 227);
+assert(test5Solution.join(","), "13,11");
+
+/*
+ * Part Two Test Cases
+ */
+
+const test6 = `.#..#
+.....
+#####
+....#
+...##`;
+
+const test6Solution = partTwoSolution(test6, 8);
+assert(test6Solution.join(","), "2,2");
