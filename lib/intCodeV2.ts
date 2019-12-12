@@ -5,40 +5,32 @@ export class IntCodeComputerV2 {
   public lastVisitedIndex = 0;
 
   private inputSignals: string[] = [];
-  private currentInstructionIndex: number = 0;
+  private pointer: number = 0;
   private instructions: string[];
   private executionPaused: boolean = true;
   private relativeBase: string = "0";
-
 
   constructor(instructions: string[]) {
     this.instructions = [...instructions];
   }
 
-  execute(): any {
+  execute(): string {
     this.executionPaused = false;
 
     while (!this.executionPaused && !this.executionHalted) {
-      this.debug(this.currentInstructionIndex, 31);
-      const [opCode, parameterModes] = this.parseOpCode(this.instructions[this.currentInstructionIndex]);
-      this.processInstruction(this.currentInstructionIndex, opCode, parameterModes);
-      this.lastVisitedIndex = this.currentInstructionIndex;
+      const [opCode, parameterModes] = this.parseOpCode(
+        this.instructions[this.pointer]
+      );
+      this.processInstruction(this.pointer, opCode, parameterModes);
+      this.lastVisitedIndex = this.pointer;
     }
 
-    return this.instructions;
+    return this.currentOutput;
   }
 
   enqueueInput(...inputs: any[]): IntCodeComputerV2 {
     this.inputSignals.push(...inputs.map(i => i.toString()));
     return this;
-  }
-
-  debug(index: number, targetIndex: number): void {
-    if(index === targetIndex) {
-      console.log(`OpCode: ${this.instructions[index]}`);
-      console.log(`Next val: ${this.instructions[index + 1]}`);
-      console.log(`Second val: ${this.instructions[index + 2]}`);
-    }
   }
 
   private getCurrentInput(): string {
@@ -48,23 +40,59 @@ export class IntCodeComputerV2 {
   private parseOpCode(code: string): [number, string[]] {
     const codeStr = code.toString();
     const opCode = codeStr.slice(-2);
-    const parameterModes = codeStr.slice(0, -2).split("").reverse();
+    const parameterModes = codeStr
+      .slice(0, -2)
+      .split("")
+      .reverse();
     return [Number(opCode), parameterModes];
   }
 
-  private processInstruction(index: number, opCode: number, parameterModes: string[]): void {
-    const [firstParameter, secondParameter] = this.getParameters(parameterModes);
+  private processInstruction(
+    index: number,
+    opCode: number,
+    parameterModes: string[]
+  ): void {
+    const [firstParameter, secondParameter] = this.getParameters(
+      parameterModes
+    );
 
     switch (opCode) {
       case 1: {
-        this.instructions[this.instructions[index + 3]] = (BigInt(firstParameter) + BigInt(secondParameter)).toString();
-        this.currentInstructionIndex = index + 4;
+        if (
+          parameterModes.length >= 3 &&
+          parameterModes[parameterModes.length - 1] === "2"
+        ) {
+          this.instructions[
+            (
+              BigInt(this.instructions[index + 3]) + BigInt(this.relativeBase)
+            ).toString()
+          ] = (BigInt(firstParameter) + BigInt(secondParameter)).toString();
+        } else {
+          this.instructions[this.instructions[index + 3]] = (
+            BigInt(firstParameter) + BigInt(secondParameter)
+          ).toString();
+        }
+
+        this.pointer = index + 4;
         break;
       }
 
       case 2: {
-        this.instructions[this.instructions[index + 3].toString()] = (BigInt(firstParameter) * BigInt(secondParameter)).toString();
-        this.currentInstructionIndex = index + 4;
+        if (
+          parameterModes.length >= 3 &&
+          parameterModes[parameterModes.length - 1] === "2"
+        ) {
+          this.instructions[
+            (
+              BigInt(this.instructions[index + 3]) + BigInt(this.relativeBase)
+            ).toString()
+          ] = (BigInt(firstParameter) * BigInt(secondParameter)).toString();
+        } else {
+          this.instructions[this.instructions[index + 3]] = (
+            BigInt(firstParameter) * BigInt(secondParameter)
+          ).toString();
+        }
+        this.pointer = index + 4;
         break;
       }
 
@@ -73,8 +101,17 @@ export class IntCodeComputerV2 {
         if (!input) {
           this.executionPaused = true;
         } else {
-          this.instructions[this.instructions[index + 1]] = input;
-          this.currentInstructionIndex = index + 2;
+          const parameter = parameterModes[0];
+          if (parameter === "2") {
+            this.instructions[
+              (
+                BigInt(this.instructions[index + 1]) + BigInt(this.relativeBase)
+              ).toString()
+            ] = input;
+          } else {
+            this.instructions[this.instructions[index + 1]] = input;
+          }
+          this.pointer = index + 2;
         }
         break;
       }
@@ -87,35 +124,64 @@ export class IntCodeComputerV2 {
         const parameter = this.getParameter(parameterModes[0], 1);
         this.outputs.push(parameter);
         this.currentOutput = parameter;
-        this.currentInstructionIndex = index + 2;
+        this.pointer = index + 2;
         break;
       }
 
       case 5: {
-        this.currentInstructionIndex = firstParameter === "0" ? index + 3 : Number(secondParameter);
+        this.pointer =
+          firstParameter === "0" ? index + 3 : Number(secondParameter);
         break;
       }
 
       case 6: {
-        this.currentInstructionIndex = firstParameter !== "0" ? index + 3 : Number(secondParameter);
+        this.pointer =
+          firstParameter !== "0" ? index + 3 : Number(secondParameter);
         break;
       }
 
       case 7: {
-        this.instructions[this.instructions[index + 3]] = BigInt(firstParameter) < BigInt(secondParameter) ? "1" : "0";
-        this.currentInstructionIndex = index + 4;
+        if (
+          parameterModes.length >= 3 &&
+          parameterModes[parameterModes.length - 1] === "2"
+        ) {
+          this.instructions[
+            (
+              BigInt(this.instructions[index + 3]) + BigInt(this.relativeBase)
+            ).toString()
+          ] = BigInt(firstParameter) < BigInt(secondParameter) ? "1" : "0";
+        } else {
+          this.instructions[this.instructions[index + 3]] =
+            BigInt(firstParameter) < BigInt(secondParameter) ? "1" : "0";
+        }
+
+        this.pointer = index + 4;
         break;
       }
 
       case 8: {
-        this.instructions[this.instructions[index + 3]] = firstParameter === secondParameter ? "1" : "0";
-        this.currentInstructionIndex = index + 4;
+        if (
+          parameterModes.length >= 3 &&
+          parameterModes[parameterModes.length - 1] === "2"
+        ) {
+          this.instructions[
+            (
+              BigInt(this.instructions[index + 3]) + BigInt(this.relativeBase)
+            ).toString()
+          ] = firstParameter === secondParameter ? "1" : "0";
+        } else {
+          this.instructions[this.instructions[index + 3]] =
+            firstParameter === secondParameter ? "1" : "0";
+        }
+        this.pointer = index + 4;
         break;
       }
 
       case 9: {
-        this.relativeBase = (BigInt(this.relativeBase) + BigInt(firstParameter)).toString();
-        this.currentInstructionIndex = index + 2;
+        this.relativeBase = (
+          BigInt(this.relativeBase) + BigInt(firstParameter)
+        ).toString();
+        this.pointer = index + 2;
         break;
       }
 
@@ -131,32 +197,34 @@ export class IntCodeComputerV2 {
     }
   }
 
-
   private getParameters(parameterModes: string[]): string[] {
     let parameters: string[] = [];
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < parameterModes.length + 1; i++) {
       parameters[i] = this.getParameter(parameterModes[i], i + 1);
     }
     return parameters;
   }
 
   private getParameter(parameterMode = "0", i: number): string {
-    const nextVal = this.instructions[this.currentInstructionIndex + i];
+    const nextElement = this.instructions[this.pointer + i];
 
-    switch(parameterMode) {
+    switch (parameterMode) {
       case "0": {
-        return this.instructions[nextVal] = this.instructions[nextVal] || "0";
+        return (this.instructions[nextElement] =
+          this.instructions[nextElement] || "0");
       }
 
       case "1": {
-        return nextVal;
+        return nextElement;
       }
 
-      case "2": {  
-        const nextIndex = (BigInt(this.relativeBase) + BigInt(nextVal)).toString();
-        return this.instructions[nextIndex] = this.instructions[nextIndex] || "0";
+      case "2": {
+        const nextIndex = (
+          BigInt(this.relativeBase) + BigInt(nextElement)
+        ).toString();
+        return (this.instructions[nextIndex] =
+          this.instructions[nextIndex] || "0");
       }
     }
   }
 }
-
