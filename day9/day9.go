@@ -23,12 +23,6 @@ func codeExecutor(memory []int64) []int64 {
 	}
 
 	for ptr := int64(0); ptr < int64(len(memory)); ptr++ {
-
-		if ptr == int64(31) {
-			fmt.Printf("Pointer: %d\n", ptr)
-			fmt.Printf("Next Val: %d\n", &memory[ptr+int64(1)])
-		}
-
 		opcode := memory[ptr] % 100
 
 		getParameter := func(parameter int64) *int64 {
@@ -61,11 +55,14 @@ func codeExecutor(memory []int64) []int64 {
 		case 2:
 			// Multiply
 			*getParameter(3) = *getParameter(1) * *getParameter(2)
+
 			fmt.Printf("Ptr: %d, Mode: %d, Param1: %d, Param2: %d, Result: %d\n", ptr, 2, *getParameter(1), *getParameter(2), *getParameter(3))
+			fmt.Printf("%d\n", memory[63])
+
 			ptr = ptr + 3
 		case 3:
 			// Read
-
+			fmt.Printf("Ptr: %d, Mode: %d\n", ptr, 3)
 			scanner := bufio.NewScanner(os.Stdin)
 			for {
 				fmt.Print("Input: ")
@@ -91,7 +88,7 @@ func codeExecutor(memory []int64) []int64 {
 			if *getParameter(1) != 0 {
 				newPtr = *getParameter(2) - int64(1) // minus 1, cause the for loop is adding 1
 			}
-			fmt.Printf("Ptr: %d, Mode: %d, nextPtr: %d\n", ptr, 5, newPtr)
+			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, nextPtr: %d\n", ptr, 5, *getParameter(1), newPtr+1)
 			ptr = newPtr
 		case 6:
 			newPtr := ptr + 2
@@ -99,26 +96,25 @@ func codeExecutor(memory []int64) []int64 {
 			if *getParameter(1) == 0 {
 				newPtr = *getParameter(2) - int64(1) // minus 1, cause the for loop is adding 1
 			}
-			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, nextPtr: %d\n", ptr, 6, *getParameter(1), newPtr)
+			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, nextPtr: %d\n", ptr, 6, *getParameter(1), newPtr+1)
 			ptr = newPtr
 		case 7:
 			// less-than
+			res := 0
 			if *getParameter(1) < *getParameter(2) {
-				*getParameter(3) = 1
-			} else {
-				*getParameter(3) = 0
+				res = 1
 			}
-			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, Param 2: %d, Result: %d\n", ptr, 7, *getParameter(1), *getParameter(2), *getParameter(3))
+			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, Param 2: %d, Result: %d\n", ptr, 7, *getParameter(1), *getParameter(2), res)
+			*getParameter(3) = int64(res)
 			ptr = ptr + 3
 		case 8:
 			// equals
-
+			res := 0
 			if *getParameter(1) == *getParameter(2) {
-				*getParameter(3) = 1
-			} else {
-				*getParameter(3) = 0
+				res = 1
 			}
 			fmt.Printf("Ptr: %d, Mode: %d, Param 1: %d, Param 2: %d, Result: %d\n", ptr, 8, *getParameter(1), *getParameter(2), *getParameter(3))
+			*getParameter(3) = int64(res)
 			ptr = ptr + 3
 		case 9:
 			// adjust relative base
