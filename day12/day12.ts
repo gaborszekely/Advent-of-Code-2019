@@ -1,4 +1,4 @@
-const fs = require("fs");
+import { parseFile } from "../lib/fileParser";
 
 function parseInput(input: string): number[][] {
   return input
@@ -76,7 +76,6 @@ class GravityField {
   }
 }
 
-const input = fs.readFileSync(__dirname + "/input.txt").toString();
-const testInput = fs.readFileSync(__dirname + "/input-test.txt").toString();
+const input = parseFile(__dirname);
 
 console.log(partOneSolution(input, 1000));

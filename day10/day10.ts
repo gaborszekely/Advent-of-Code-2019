@@ -1,4 +1,4 @@
-const fs = require("fs");
+import { parseFile } from "../lib/fileParser";
 
 interface Asteroid {
   offset: number;
@@ -188,7 +188,7 @@ function isBlocked(
  * Print solutions
  */
 
-const input = fs.readFileSync(__dirname + "/input.txt").toString();
+const input = parseFile(__dirname);
 
 const [maxSeen] = partOneSolution(input);
 console.log(maxSeen);
