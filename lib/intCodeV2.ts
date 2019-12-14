@@ -1,13 +1,13 @@
 export class IntCodeComputerV2 {
   public executionHalted = false;
+  public executionPaused: boolean = true;
   public currentOutput: string;
   public outputs: string[] = [];
   public lastVisitedIndex = 0;
+  public pointer: number = 0;
+  public instructions: string[];
 
   private inputSignals: string[] = [];
-  private pointer: number = 0;
-  private instructions: string[];
-  private executionPaused: boolean = true;
   private relativeBase: string = "0";
 
   constructor(instructions: string[]) {
