@@ -117,10 +117,9 @@ export class IntCodeComputerV2 {
       }
 
       case 4: {
-        if (!this.inputSignals.length) {
-          this.executionPaused = true;
-        }
-
+        // if (!this.inputSignals.length) {
+        //   this.executionPaused = true;
+        // }
         const parameter = this.getParameter(parameterModes[0], 1);
         this.outputs.push(parameter);
         this.currentOutput = parameter;
@@ -199,7 +198,7 @@ export class IntCodeComputerV2 {
 
   private getParameters(parameterModes: string[]): string[] {
     let parameters: string[] = [];
-    for (let i = 0; i < parameterModes.length + 1; i++) {
+    for (let i = 0; i < 3; i++) {
       parameters[i] = this.getParameter(parameterModes[i], i + 1);
     }
     return parameters;
