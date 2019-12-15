@@ -1,12 +1,8 @@
 import { IntCodeComputerV2 } from "../lib/intCodeV2";
 import { generateGrid } from "../lib/generateGrid";
+import { parseFile } from "../lib/fileParser";
 
-const fs = require("fs");
-
-const input = fs
-  .readFileSync(__dirname + "/input.txt")
-  .toString()
-  .split(",");
+const input = parseFile(__dirname).split(",");
 
 enum DirectionEnum {
   UP = "up",

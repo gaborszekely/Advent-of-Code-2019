@@ -1,8 +1,7 @@
 import { assert } from "../lib";
+import { parseFile } from "../lib/fileParser";
 
-const fs = require("fs");
-
-const input = fs.readFileSync(__dirname + "/input.txt").toString();
+const input = parseFile(__dirname);
 
 enum ColorEnums {
   BLACK = "0",
@@ -17,7 +16,6 @@ function partOneSolution(input: string, width: number, height: number): number {
     .map(layer => findTotalColors(layer, ColorEnums.BLACK))
     .map((total, index) => ({ total, index }))
     .sort((a, b) => a.total - b.total)[0].index;
-
 
   const targetLayer = layers[targetLayerIndex];
 
@@ -44,7 +42,11 @@ function partTwoSolution(input: string, width: number, height: number): string {
   return result;
 }
 
-function processInput(input: string, width: number, height: number): string[][][] {
+function processInput(
+  input: string,
+  width: number,
+  height: number
+): string[][][] {
   const layers = [];
   let currentLayer = [[]];
 
@@ -74,7 +76,7 @@ function findTotalColors(layer: string[][], target: string): number {
       if (val === target) {
         total += 1;
       }
-    })
+    });
   });
   return total;
 }
@@ -86,7 +88,7 @@ const pt1Solution = partOneSolution(input, 25, 6);
 console.log(pt1Solution);
 
 const testData = "0222112222120000";
-assert(partTwoSolution(testData, 2, 2), ` █\n█ \n`)
+assert(partTwoSolution(testData, 2, 2), ` █\n█ \n`);
 
 const pt2Solution = partTwoSolution(input, 25, 6);
 console.log(pt2Solution);

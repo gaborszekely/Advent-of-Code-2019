@@ -1,10 +1,7 @@
 import { IntCodeComputerV2, assert } from "../lib";
+import { parseFile } from "../lib/fileParser";
 
-const fs = require("fs");
-const input = fs
-  .readFileSync(__dirname + "/input.txt")
-  .toString()
-  .split(",");
+const input = parseFile(__dirname).split(",");
 
 function partOneSolution(input: string[]) {
   return new IntCodeComputerV2(input).enqueueInput(1).execute();

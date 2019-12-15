@@ -1,18 +1,14 @@
-const fs = require("fs");
-import { IntCodeComputer, assert, IntCodeComputerV2 } from "../lib";
+import { assert, IntCodeComputerV2 } from "../lib";
 import { permutateRange } from "../lib/permutations";
+import { parseFile } from "../lib/fileParser";
 
-const input = fs
-  .readFileSync(__dirname + "/input.txt")
-  .toString()
-  .split(",")
-  .map((i: string) => Number(i));
+const input = parseFile(__dirname).split(",");
 
 /**
  * Part One Solution
  */
 
-function partOneSolution(input: any[]): string {
+function partOneSolution(input: string[]): string {
   const permutations = permutateRange(0, 4);
   let maxOutput: string = "0";
 
@@ -59,7 +55,7 @@ const testInput1 = [
   99,
   0,
   0
-];
+].map(i => i.toString());
 const testInput2 = [
   3,
   23,
@@ -86,7 +82,7 @@ const testInput2 = [
   99,
   0,
   0
-];
+].map(i => i.toString());
 const testInput3 = [
   3,
   31,
@@ -122,7 +118,7 @@ const testInput3 = [
   0,
   0,
   0
-];
+].map(i => i.toString());
 
 assert(partOneSolution(testInput1), "43210");
 assert(partOneSolution(testInput2), "54321");
@@ -135,8 +131,7 @@ console.log(pt1Solution);
  * Part Two Solution
  */
 
-function partTwoSolution(input: any[]): string {
-  input = input.map(i => i.toString());
+function partTwoSolution(input: string[]): string {
   const permutations = permutateRange(5, 9);
   let maxOutput: string = "0";
 
@@ -211,7 +206,8 @@ const testInput4 = [
   0,
   0,
   5
-];
+].map(i => i.toString());
+
 const testInput5 = [
   3,
   52,
@@ -270,7 +266,7 @@ const testInput5 = [
   0,
   0,
   10
-];
+].map(i => i.toString());
 
 assert(partTwoSolution(testInput4), "139629729");
 assert(partTwoSolution(testInput5), "18216");
