@@ -21,32 +21,37 @@ export function partOneSolution(input: string[]): number {
 
   let coords: Coord = [0, 0];
 
-  animate(() => {
-    let moved = false;
+  logGrid(grid, coords);
 
-    for (let direction of directions) {
-      intCodeComputer.enqueueInput(direction).execute();
-      const output = intCodeComputer.currentOutput as StatusCode;
+  setTimeout(() => {
+    animate(async () => {
+      let moved = false;
 
-      if (output === StatusCode.FOUND) {
-        return false;
-      }
+      for (let direction of directions) {
+        intCodeComputer.enqueueInput(direction).execute();
+        const output = intCodeComputer.currentOutput as StatusCode;
 
-      if (output === StatusCode.WALL) {
-        coords = setWall(grid, coords, previousDirection, direction);
+        if (output === StatusCode.FOUND) {
+          return false;
+        }
+
+        if (output === StatusCode.WALL) {
+          coords = setWall(grid, coords, previousDirection, direction);
+          logGrid(grid, coords);
+          await sleep(3000);
+          continue;
+        }
+
+        moved = true;
+        steps += 1;
+        coords = move(grid, coords, previousDirection, direction);
+        previousDirection = direction;
         logGrid(grid, coords);
-        continue;
+        break;
       }
 
-      moved = true;
-      steps += 1;
-      coords = move(grid, coords, previousDirection, direction);
-      previousDirection = direction;
-      logGrid(grid, coords);
-      break;
-    }
-
-    return moved;
+      return moved;
+    }, 3000);
   }, 3000);
 
   return steps;
@@ -73,7 +78,18 @@ enum StatusCode {
 
 console.log(partOneSolution(input));
 
-function animate(animateFunction: () => boolean, delay: number): void {
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
+
+function animate(
+  animateFunction: () => boolean | Promise<boolean>,
+  delay: number
+): void {
   const continueIteration = animateFunction();
   if (continueIteration) {
     setTimeout(() => {
