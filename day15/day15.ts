@@ -5,27 +5,6 @@ import { fill } from "../lib/unlimitedGrid";
 
 const input = parseFile(__dirname).split(",");
 
-export function partOneSolution1(input: string[]): number {
-  // let minSteps: number = 0;
-  // const inner = (input: string[], pointer = 0, steps = 0) => {
-  //   const intCodeComputer = new IntCodeComputerV2(input);
-  //   for (let direction = 1; direction <= 4; direction++) {
-  //     let newSteps = steps;
-  //     intCodeComputer.enqueueInput(direction).execute();
-  //     const output = intCodeComputer.currentOutput as StatusCodes;
-  //     // Since we didn't hit a wall, increment steps
-  //     if (output !== StatusCodes.WALL) {
-  //       newSteps += 1;
-  //     }
-  //     if (output === StatusCodes.FOUND) {
-  //       minSteps = Math.min(minSteps, newSteps);
-  //     }
-  //   }
-  // };
-  // inner(input);
-  // return minSteps;
-}
-
 export function partOneSolution(input: string[]): number {
   const intCodeComputer = new IntCodeComputerV2(input);
   const grid = [["*"]];
@@ -200,7 +179,7 @@ function move(
 function logGrid(grid: string[][], coords: Coord): void {
   console.clear();
   console.log(`Current Coords: ${coords.join(", ")}\n\n`);
-  console.log(grid);
+  console.log(logMap(grid));
 }
 
 function logMap(grid: string[][]): void {
