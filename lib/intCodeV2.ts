@@ -33,6 +33,10 @@ export class IntCodeComputerV2 {
     return this;
   }
 
+  setPointer(pointer: number): void {
+    this.pointer = pointer;
+  }
+
   private getCurrentInput(): string {
     return this.inputSignals.shift();
   }
@@ -111,6 +115,7 @@ export class IntCodeComputerV2 {
           } else {
             this.instructions[this.instructions[index + 1]] = input;
           }
+
           this.pointer = index + 2;
         }
         break;
