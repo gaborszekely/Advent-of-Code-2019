@@ -43,14 +43,9 @@ export function partOneSolution(input: string[]): number {
   let coords: Coord = [0, 0];
 
   animate(() => {
-    console.clear();
-    console.log(`Current Coords: ${coords.join(", ")}\n\n`);
-    console.log(grid);
-
     let moved = false;
 
     for (let direction of directions) {
-      console.log(previousDirection);
       intCodeComputer.enqueueInput(direction).execute();
       const output = intCodeComputer.currentOutput as StatusCode;
 
@@ -59,25 +54,21 @@ export function partOneSolution(input: string[]): number {
       }
 
       if (output === StatusCode.WALL) {
-        const wallCoords = updateCoords(coords, previousDirection, direction);
-        fill(grid, wallCoords, "#", " ");
+        coords = setWall(grid, coords, previousDirection, direction);
+        logGrid(grid, coords);
         continue;
       }
 
       moved = true;
       steps += 1;
-      grid[coords[0]][coords[1]] = ".";
-      coords = fill(
-        grid,
-        updateCoords(coords, previousDirection, direction),
-        "*",
-        " "
-      );
+      coords = move(grid, coords, previousDirection, direction);
       previousDirection = direction;
+      logGrid(grid, coords);
       break;
     }
+
     return moved;
-  }, 200);
+  }, 3000);
 
   return steps;
 }
@@ -180,7 +171,57 @@ function updateCoords(
   }
 }
 
+function setWall(
+  grid: string[][],
+  coords: Coord,
+  previousDirection: Direction,
+  direction: Direction
+): Coord {
+  const wallCoords = updateCoords(coords, previousDirection, direction);
+  const newCoords = fill(grid, wallCoords, "#", " ");
+  const offset = [coords[0] - wallCoords[0], coords[1] - wallCoords[1]];
+  grid[newCoords[0] + offset[0]][newCoords[1] + offset[1]] = "*";
+  return [newCoords[0] + offset[0], newCoords[1] + offset[1]];
+}
+
+function move(
+  grid: string[][],
+  coords: Coord,
+  previousDirection: Direction,
+  direction: Direction
+): Coord {
+  const updatedCoords = updateCoords(coords, previousDirection, direction);
+  const newCoords = fill(grid, updatedCoords, "*", " ");
+  const offset = [coords[0] - updatedCoords[0], coords[1] - updatedCoords[1]];
+  grid[newCoords[0] + offset[0]][newCoords[1] + offset[1]] = ".";
+  return newCoords;
+}
+
+function logGrid(grid: string[][], coords: Coord): void {
+  console.clear();
+  console.log(`Current Coords: ${coords.join(", ")}\n\n`);
+  console.log(grid);
+}
+
+function logMap(grid: string[][]): void {
+  console.log(grid.map(row => row.join("")).join("\n"));
+}
+
 // const grid = [["*"]];
-// const newCoords = updateCoords([0, 0], Direction.STRAIGHT, Direction.LEFT);
-// fill(grid, newCoords, "*", " ");
-// console.log(grid);
+// let ourCoords: Coord = [0, 0];
+
+// logMap(grid);
+
+// ourCoords = setWall(grid, ourCoords, Direction.STRAIGHT, Direction.BACK);
+// logMap(grid);
+// console.log(ourCoords);
+
+// console.log("MOVING LEFT");
+// ourCoords = move(grid, ourCoords, Direction.STRAIGHT, Direction.RIGHT);
+// logMap(grid);
+// console.log("Our Coords: ", ourCoords.join(", "));
+
+// console.log("MOVING DOWN");
+// ourCoords = move(grid, ourCoords, Direction.RIGHT, Direction.RIGHT);
+// logMap(grid);
+// console.log("Our Coords: ", ourCoords.join(", "));
