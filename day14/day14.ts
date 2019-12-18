@@ -12,25 +12,6 @@ export function partOneSolution(nanoFactory: string): number {
   return calculateMinimumOre(baseIngredientsNeeded, nanoFactoryMap);
 }
 
-// export function partOneSolution(nanoFactory: string): number {
-//   const nanoFactoryMap = parseNanoFactory(nanoFactory);
-//   const fuelInfo = nanoFactoryMap[Chemicals.FUEL];
-
-//   let leftoverIngredients = {};
-//   const ingredients = findBaseIngredients(
-//     fuelInfo,
-//     nanoFactoryMap,
-//     leftoverIngredients
-//   );
-//   console.log(leftoverIngredients);
-
-//   for (let key in ingredients) {
-//     ingredients[key] -= leftoverIngredients[key] || 0;
-//   }
-
-//   return calculateMinimumOre(ingredients, nanoFactoryMap);
-// }
-
 export function partTwoSolution() {}
 
 /**

@@ -30,14 +30,28 @@ const test4Input = `139 ORE => 4 Apple
 144 ORE => 7 Banana
 145 ORE => 6 Cake
 176 ORE => 6 Cream
-2 Cheese, 7 Corn, 2 Chips, 11 Cake => 1 Sandwitch
+2 Cheese, 7 Corn, 2 Chips, 11 Cake => 1 Sandwhich
 17 Apple, 3 Banana => 8 Cheese
 22 Cream, 37 Cake => 5 Corn
 5 Cake, 7 Doritos, 2 Corn, 2 Cheese, 19 Chips => 3 Taco
 5 Cream, 7 Cake, 9 Cheese, 37 Chips => 6 Steak
 1 Apple => 8 Chips
 1 Cream, 6 Cake => 4 Doritos
-53 Sandwitch, 6 Cake, 46 Cream, 81 Taco, 68 Chips, 25 Steak => 1 FUEL`;
+53 Sandwhich, 6 Cake, 46 Cream, 81 Taco, 68 Chips, 25 Steak => 1 FUEL`;
+/*
+1 Fuel:
+  25 STEAK  (Need 1 Steak):
+     - 20 Cream
+     - 28 Cake
+     - 36 Cheese
+     - 148 Chips
+
+  68 Chips (need 1 chip)
+     - 8 Apple
+  
+  81 Taco (good)
+     - 
+*/
 
 // const test4Input = `139 ORE => 4 NVRVD
 // 144 ORE => 7 JNWZP
